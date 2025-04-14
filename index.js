@@ -1,4 +1,6 @@
 $(document).ready(function () {
+    // Make task list sortable (drag-and-drop)
+  $('#taskList').sortable();
     // Add a new task
     $("#addTask").click(function(){
         let task = $('#taskInput').val().trim();
