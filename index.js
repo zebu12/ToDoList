@@ -31,6 +31,37 @@ $(document).ready(function () {
       $(this).parent().remove();
       saveTasks();
     });
+    // Edit on double-click
+  $('#taskList').on('dblclick', 'li', function () {
+    const $li = $(this);
+    if ($li.find('input').length) return; // Already editing
+
+    const currentText = $li.clone().children().remove().end().text().trim();
+
+    const $input = $('<input type="text">').val(currentText).addClass('edit-input');
+    $li.html($input).append('<span class="delete">✖</span>');
+    $input.focus();
+
+    // Save on Enter or blur
+    $input.on('keydown', function (e) {
+      if (e.key === 'Enter') {
+        finishEdit($li, $input.val());
+      } else if (e.key === 'Escape') {
+        finishEdit($li, currentText);
+      }
+    });
+
+    $input.on('blur', function () {
+      finishEdit($li, $input.val());
+    });
+  });
+
+  function finishEdit($li, newText) {
+    const isCompleted = $li.hasClass('completed');
+    $li.html(`${newText} <span class="delete">✖</span>`);
+    if (isCompleted) $li.addClass('completed');
+    saveTasks();
+  }
   
     // Function to add task to DOM
     function addTaskToList(taskText, completed) {
