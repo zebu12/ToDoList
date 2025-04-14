@@ -62,6 +62,20 @@ $(document).ready(function () {
     if (isCompleted) $li.addClass('completed');
     saveTasks();
   }
+  // Theme toggle
+    $('#toggleTheme').click(function () {
+    $('body').toggleClass('dark');
+    const isDark = $('body').hasClass('dark');
+    $(this).text(isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode');
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+  });
+  
+  // Load theme on start
+    const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+    $('body').addClass('dark');
+    $('#toggleTheme').text('Switch to Light Mode');
+  }
   
     // Function to add task to DOM
     function addTaskToList(taskText, completed) {
